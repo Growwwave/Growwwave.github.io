@@ -149,7 +149,10 @@ export default {
           contents,
 
           generationConfig: {
-            maxOutputTokens: 1200
+  thinkingConfig: {
+    thinkingLevel: "minimal"
+  }
+          }
           }
         })
       });
