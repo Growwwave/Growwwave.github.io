@@ -46,7 +46,7 @@ export default {
       const geminiUrl =
         `https://generativelanguage.googleapis.com/v1beta/models/` +
         `${encodeURIComponent(model)}:streamGenerateContent` +
-        `?alt=sse&key=${encodeURIComponent(apiKey)}`;
+        `?alt=sse`;
 
       const contents = messages
         .filter(
@@ -63,7 +63,8 @@ export default {
       const response = await fetch(geminiUrl, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "x-goog-api-key": apiKey
         },
         body: JSON.stringify({
           systemInstruction: {
