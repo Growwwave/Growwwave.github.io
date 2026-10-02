@@ -1,4 +1,4 @@
-function buildSystemPrompt(knowledge) {
+export function buildSystemPrompt(knowledge) {
   const business = knowledge?.business_name || "GrowwWave";
   const sourcePolicy =
     knowledge?.source_policy ||
@@ -61,4 +61,4 @@ ${raw}
 `;
 }
 
-module.exports = { buildSystemPrompt };
+
