@@ -55,31 +55,33 @@ export default {
       }
 
       const model =
-        env.GEMINI_MODEL || "gemini-3.6-flash";
+        (env.GEMINI_MODEL || "gemini-3.6-flash").trim();
+
+      if (!model) {
+        throw new Error("GEMINI_MODEL is empty.");
+      }
 
       // ---------------------------------------------------------
       // 3. BUILD SYSTEM PROMPT
       // ---------------------------------------------------------
 
-      // Prevent source_policy object from becoming "[object Object]"
+      // Pass the full structured knowledge object to the prompt.
+      // prompt.js now handles source_policy whether it is a string or object.
       const promptKnowledge = {
         ...knowledge
       };
 
-      if (
-        promptKnowledge.source_policy &&
-        typeof promptKnowledge.source_policy === "object"
-      ) {
-        promptKnowledge.source_policy =
-          JSON.stringify(
-            promptKnowledge.source_policy,
-            null,
-            2
-          );
-      }
-
       const systemInstruction =
         buildSystemPrompt(promptKnowledge);
+
+      if (
+        !systemInstruction ||
+        typeof systemInstruction !== "string"
+      ) {
+        throw new Error(
+          "Toro system prompt could not be generated."
+        );
+      }
 
       // ---------------------------------------------------------
       // 4. BUILD GEMINI CONTENTS
@@ -134,6 +136,7 @@ export default {
 
         headers: {
           "Content-Type": "application/json",
+          "Accept": "text/event-stream",
           "x-goog-api-key": apiKey
         },
 
@@ -149,10 +152,9 @@ export default {
           contents,
 
           generationConfig: {
-  thinkingConfig: {
-    thinkingLevel: "minimal"
-  }
-          }
+            thinkingConfig: {
+              thinkingLevel: "minimal"
+            }
           }
         })
       });
@@ -165,8 +167,7 @@ export default {
         const errorText =
           await response.text();
 
-        let readableError =
-          errorText;
+        let readableError = errorText;
 
         try {
           const parsed =
@@ -174,16 +175,16 @@ export default {
 
           readableError =
             parsed?.error?.message ||
+            parsed?.error?.status ||
             errorText;
         } catch {
-          // Keep raw response
+          // Keep raw response text.
         }
 
         throw new Error(
-          `Gemini HTTP ${response.status}: ${readableError.slice(
-            0,
-            1200
-          )}`
+          `Gemini HTTP ${response.status}: ${String(
+            readableError || "Unknown Gemini error."
+          ).slice(0, 1500)}`
         );
       }
 
@@ -209,6 +210,9 @@ export default {
       const stream =
         new ReadableStream({
           async start(controller) {
+            let buffer = "";
+            let sentText = false;
+
             const send = (payload) => {
               controller.enqueue(
                 encoder.encode(
@@ -219,7 +223,90 @@ export default {
               );
             };
 
-            let buffer = "";
+            const processEvent = (event) => {
+              const dataLines =
+                event
+                  .split(/\r?\n/)
+                  .filter((line) =>
+                    line.startsWith("data:")
+                  )
+                  .map((line) =>
+                    line.slice(5).trim()
+                  );
+
+              if (!dataLines.length) {
+                return;
+              }
+
+              const raw =
+                dataLines.join("\n").trim();
+
+              if (!raw || raw === "[DONE]") {
+                return;
+              }
+
+              let parsed;
+
+              try {
+                parsed =
+                  JSON.parse(raw);
+              } catch {
+                // Ignore non-JSON SSE frames.
+                return;
+              }
+
+              if (parsed?.error) {
+                throw new Error(
+                  parsed.error.message ||
+                    parsed.error.status ||
+                    "Gemini stream error."
+                );
+              }
+
+              if (
+                parsed?.promptFeedback?.blockReason
+              ) {
+                throw new Error(
+                  `Gemini blocked the request: ${parsed.promptFeedback.blockReason}`
+                );
+              }
+
+              const candidate =
+                parsed?.candidates?.[0];
+
+              if (
+                candidate?.finishReason &&
+                candidate.finishReason !== "STOP" &&
+                candidate.finishReason !== "MAX_TOKENS"
+              ) {
+                throw new Error(
+                  `Gemini finished without a normal response: ${candidate.finishReason}`
+                );
+              }
+
+              const parts =
+                candidate?.content?.parts || [];
+
+              for (const part of parts) {
+                // Never expose Gemini internal thinking/reasoning text to UI.
+                if (part?.thought === true) {
+                  continue;
+                }
+
+                if (
+                  part &&
+                  typeof part.text === "string" &&
+                  part.text
+                ) {
+                  sentText = true;
+
+                  send({
+                    type: "delta",
+                    text: part.text
+                  });
+                }
+              }
+            };
 
             try {
               while (true) {
@@ -232,12 +319,13 @@ export default {
                   break;
                 }
 
-                buffer += decoder.decode(
-                  value,
-                  {
-                    stream: true
-                  }
-                );
+                buffer +=
+                  decoder.decode(
+                    value,
+                    {
+                      stream: true
+                    }
+                  );
 
                 const events =
                   buffer.split(
@@ -248,148 +336,22 @@ export default {
                   events.pop() || "";
 
                 for (const event of events) {
-                  const dataLines =
-                    event
-                      .split(/\r?\n/)
-                      .filter(
-                        (line) =>
-                          line.startsWith(
-                            "data:"
-                          )
-                      )
-                      .map(
-                        (line) =>
-                          line
-                            .slice(5)
-                            .trim()
-                      );
-
-                  if (
-                    !dataLines.length
-                  ) {
-                    continue;
-                  }
-
-                  const raw =
-                    dataLines.join("\n");
-
-                  if (
-                    !raw ||
-                    raw === "[DONE]"
-                  ) {
-                    continue;
-                  }
-
-                  let parsed;
-
-                  try {
-                    parsed =
-                      JSON.parse(raw);
-                  } catch {
-                    continue;
-                  }
-
-                  // Gemini may return an API-level error
-                  if (parsed?.error) {
-                    throw new Error(
-                      parsed.error.message ||
-                        "Gemini stream error."
-                    );
-                  }
-
-                  const parts =
-                    parsed
-                      ?.candidates?.[0]
-                      ?.content?.parts ||
-                    [];
-
-                  for (const part of parts) {
-                    if (
-                      part &&
-                      typeof part.text ===
-                        "string" &&
-                      part.text
-                    ) {
-                      send({
-                        type: "delta",
-                        text: part.text
-                      });
-                    }
-                  }
+                  processEvent(event);
                 }
               }
 
-              // -------------------------------------------------
-              // 8. PROCESS ANY FINAL BUFFERED SSE EVENT
-              // -------------------------------------------------
+              // Flush decoder remainder.
+              buffer += decoder.decode();
 
+              // Process final SSE event even if blank-line terminator is missing.
               if (buffer.trim()) {
-                const dataLines =
-                  buffer
-                    .split(/\r?\n/)
-                    .filter(
-                      (line) =>
-                        line.startsWith(
-                          "data:"
-                        )
-                    )
-                    .map(
-                      (line) =>
-                        line
-                          .slice(5)
-                          .trim()
-                    );
+                processEvent(buffer);
+              }
 
-                if (dataLines.length) {
-                  const raw =
-                    dataLines.join("\n");
-
-                  if (
-                    raw &&
-                    raw !== "[DONE]"
-                  ) {
-                    try {
-                      const parsed =
-                        JSON.parse(raw);
-
-                      if (parsed?.error) {
-                        throw new Error(
-                          parsed.error.message ||
-                            "Gemini stream error."
-                        );
-                      }
-
-                      const parts =
-                        parsed
-                          ?.candidates?.[0]
-                          ?.content?.parts ||
-                        [];
-
-                      for (const part of parts) {
-                        if (
-                          part &&
-                          typeof part.text ===
-                            "string" &&
-                          part.text
-                        ) {
-                          send({
-                            type: "delta",
-                            text: part.text
-                          });
-                        }
-                      }
-                    } catch (error) {
-                      if (
-                        error?.message &&
-                        !error.message.includes(
-                          "Unexpected token"
-                        )
-                      ) {
-                        throw error;
-                      }
-                    }
-                  }
-                }
+              if (!sentText) {
+                throw new Error(
+                  "Gemini completed the request but returned no text response."
+                );
               }
 
               send({
@@ -406,12 +368,18 @@ export default {
               });
 
               controller.close();
+            } finally {
+              try {
+                reader.releaseLock();
+              } catch {
+                // Ignore reader cleanup errors.
+              }
             }
           }
         });
 
       // ---------------------------------------------------------
-      // 9. RETURN SSE RESPONSE
+      // 8. RETURN SSE RESPONSE
       // ---------------------------------------------------------
 
       return new Response(stream, {
@@ -425,12 +393,15 @@ export default {
             "no-cache, no-transform",
 
           "X-Accel-Buffering":
-            "no"
+            "no",
+
+          "Connection":
+            "keep-alive"
         }
       });
     } catch (error) {
       // ---------------------------------------------------------
-      // 10. FINAL BACKEND ERROR
+      // 9. FINAL BACKEND ERROR
       // ---------------------------------------------------------
 
       const message =
