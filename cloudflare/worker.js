@@ -21,6 +21,10 @@ export default {
     }
 
     try {
+      // ---------------------------------------------------------
+      // 1. READ REQUEST
+      // ---------------------------------------------------------
+
       const body = await request.json();
 
       const messages = Array.isArray(body?.messages)
@@ -29,165 +33,418 @@ export default {
 
       if (!messages.length) {
         return Response.json(
-          { error: "messages is required" },
-          { status: 400 }
+          {
+            error: "messages is required"
+          },
+          {
+            status: 400
+          }
         );
       }
+
+      // ---------------------------------------------------------
+      // 2. GEMINI CONFIG
+      // ---------------------------------------------------------
 
       const apiKey = env.GEMINI_API_KEY;
 
       if (!apiKey) {
-        throw new Error("GEMINI_API_KEY is not configured");
+        throw new Error(
+          "GEMINI_API_KEY is not configured in Cloudflare Worker secrets."
+        );
       }
 
-      const model = env.GEMINI_MODEL || "gemini-3.6-flash";
-      const systemInstruction = buildSystemPrompt(knowledge);
+      const model =
+        env.GEMINI_MODEL || "gemini-3.6-flash";
 
-      const geminiUrl =
-        `https://generativelanguage.googleapis.com/v1beta/models/` +
-        `${encodeURIComponent(model)}:streamGenerateContent` +
-        `?alt=sse`;
+      // ---------------------------------------------------------
+      // 3. BUILD SYSTEM PROMPT
+      // ---------------------------------------------------------
+
+      // Prevent source_policy object from becoming "[object Object]"
+      const promptKnowledge = {
+        ...knowledge
+      };
+
+      if (
+        promptKnowledge.source_policy &&
+        typeof promptKnowledge.source_policy === "object"
+      ) {
+        promptKnowledge.source_policy =
+          JSON.stringify(
+            promptKnowledge.source_policy,
+            null,
+            2
+          );
+      }
+
+      const systemInstruction =
+        buildSystemPrompt(promptKnowledge);
+
+      // ---------------------------------------------------------
+      // 4. BUILD GEMINI CONTENTS
+      // ---------------------------------------------------------
 
       const contents = messages
         .filter(
-          (m) =>
-            m &&
-            typeof m.content === "string" &&
-            m.content.trim()
+          (message) =>
+            message &&
+            typeof message.content === "string" &&
+            message.content.trim()
         )
-        .map((m) => ({
-          role: m.role === "model" ? "model" : "user",
-          parts: [{ text: m.content }]
+        .map((message) => ({
+          role:
+            message.role === "model"
+              ? "model"
+              : "user",
+          parts: [
+            {
+              text: message.content.trim()
+            }
+          ]
         }));
+
+      if (!contents.length) {
+        throw new Error(
+          "No valid message content was provided."
+        );
+      }
+
+      // Gemini chat history must end with the user's message.
+      const lastMessage =
+        contents[contents.length - 1];
+
+      if (lastMessage.role !== "user") {
+        throw new Error(
+          "Invalid conversation state: final message must be from the user."
+        );
+      }
+
+      // ---------------------------------------------------------
+      // 5. GEMINI STREAMING REQUEST
+      // ---------------------------------------------------------
+
+      const geminiUrl =
+        `https://generativelanguage.googleapis.com/v1beta/models/` +
+        `${encodeURIComponent(model)}` +
+        `:streamGenerateContent?alt=sse`;
 
       const response = await fetch(geminiUrl, {
         method: "POST",
+
         headers: {
           "Content-Type": "application/json",
           "x-goog-api-key": apiKey
         },
+
         body: JSON.stringify({
           systemInstruction: {
-            parts: [{ text: systemInstruction }]
+            parts: [
+              {
+                text: systemInstruction
+              }
+            ]
           },
+
           contents,
+
           generationConfig: {
-            temperature: 0.35,
             maxOutputTokens: 1200
           }
         })
       });
 
+      // ---------------------------------------------------------
+      // 6. HANDLE GEMINI HTTP ERRORS
+      // ---------------------------------------------------------
+
       if (!response.ok) {
-        const errorText = await response.text();
+        const errorText =
+          await response.text();
+
+        let readableError =
+          errorText;
+
+        try {
+          const parsed =
+            JSON.parse(errorText);
+
+          readableError =
+            parsed?.error?.message ||
+            errorText;
+        } catch {
+          // Keep raw response
+        }
 
         throw new Error(
-          `Gemini HTTP ${response.status}: ${errorText.slice(0, 800)}`
+          `Gemini HTTP ${response.status}: ${readableError.slice(
+            0,
+            1200
+          )}`
         );
       }
 
       if (!response.body) {
-        throw new Error("Gemini returned no stream");
+        throw new Error(
+          "Gemini returned no response stream."
+        );
       }
 
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
+      // ---------------------------------------------------------
+      // 7. STREAM GEMINI → TORO
+      // ---------------------------------------------------------
 
-      const encoder = new TextEncoder();
+      const reader =
+        response.body.getReader();
 
-      const stream = new ReadableStream({
-        async start(controller) {
-          const send = (payload) => {
-            controller.enqueue(
-              encoder.encode(
-                `data: ${JSON.stringify(payload)}\n\n`
-              )
-            );
-          };
+      const decoder =
+        new TextDecoder();
 
-          let buffer = "";
+      const encoder =
+        new TextEncoder();
 
-          try {
-            while (true) {
-              const { value, done } = await reader.read();
+      const stream =
+        new ReadableStream({
+          async start(controller) {
+            const send = (payload) => {
+              controller.enqueue(
+                encoder.encode(
+                  `data: ${JSON.stringify(
+                    payload
+                  )}\n\n`
+                )
+              );
+            };
 
-              if (done) break;
+            let buffer = "";
 
-              buffer += decoder.decode(value, {
-                stream: true
-              });
+            try {
+              while (true) {
+                const {
+                  value,
+                  done
+                } = await reader.read();
 
-              const events = buffer.split(/\r?\n\r?\n/);
-              buffer = events.pop() || "";
-
-              for (const event of events) {
-                const dataLines = event
-                  .split(/\r?\n/)
-                  .filter((line) => line.startsWith("data:"))
-                  .map((line) => line.slice(5).trim());
-
-                if (!dataLines.length) continue;
-
-                const raw = dataLines.join("\n");
-
-                if (!raw || raw === "[DONE]") continue;
-
-                let parsed;
-
-                try {
-                  parsed = JSON.parse(raw);
-                } catch {
-                  continue;
+                if (done) {
+                  break;
                 }
 
-                const parts =
-                  parsed?.candidates?.[0]?.content?.parts || [];
+                buffer += decoder.decode(
+                  value,
+                  {
+                    stream: true
+                  }
+                );
 
-                for (const part of parts) {
+                const events =
+                  buffer.split(
+                    /\r?\n\r?\n/
+                  );
+
+                buffer =
+                  events.pop() || "";
+
+                for (const event of events) {
+                  const dataLines =
+                    event
+                      .split(/\r?\n/)
+                      .filter(
+                        (line) =>
+                          line.startsWith(
+                            "data:"
+                          )
+                      )
+                      .map(
+                        (line) =>
+                          line
+                            .slice(5)
+                            .trim()
+                      );
+
                   if (
-                    part &&
-                    typeof part.text === "string" &&
-                    part.text
+                    !dataLines.length
                   ) {
-                    send({
-                      type: "delta",
-                      text: part.text
-                    });
+                    continue;
+                  }
+
+                  const raw =
+                    dataLines.join("\n");
+
+                  if (
+                    !raw ||
+                    raw === "[DONE]"
+                  ) {
+                    continue;
+                  }
+
+                  let parsed;
+
+                  try {
+                    parsed =
+                      JSON.parse(raw);
+                  } catch {
+                    continue;
+                  }
+
+                  // Gemini may return an API-level error
+                  if (parsed?.error) {
+                    throw new Error(
+                      parsed.error.message ||
+                        "Gemini stream error."
+                    );
+                  }
+
+                  const parts =
+                    parsed
+                      ?.candidates?.[0]
+                      ?.content?.parts ||
+                    [];
+
+                  for (const part of parts) {
+                    if (
+                      part &&
+                      typeof part.text ===
+                        "string" &&
+                      part.text
+                    ) {
+                      send({
+                        type: "delta",
+                        text: part.text
+                      });
+                    }
                   }
                 }
               }
+
+              // -------------------------------------------------
+              // 8. PROCESS ANY FINAL BUFFERED SSE EVENT
+              // -------------------------------------------------
+
+              if (buffer.trim()) {
+                const dataLines =
+                  buffer
+                    .split(/\r?\n/)
+                    .filter(
+                      (line) =>
+                        line.startsWith(
+                          "data:"
+                        )
+                    )
+                    .map(
+                      (line) =>
+                        line
+                          .slice(5)
+                          .trim()
+                    );
+
+                if (dataLines.length) {
+                  const raw =
+                    dataLines.join("\n");
+
+                  if (
+                    raw &&
+                    raw !== "[DONE]"
+                  ) {
+                    try {
+                      const parsed =
+                        JSON.parse(raw);
+
+                      if (parsed?.error) {
+                        throw new Error(
+                          parsed.error.message ||
+                            "Gemini stream error."
+                        );
+                      }
+
+                      const parts =
+                        parsed
+                          ?.candidates?.[0]
+                          ?.content?.parts ||
+                        [];
+
+                      for (const part of parts) {
+                        if (
+                          part &&
+                          typeof part.text ===
+                            "string" &&
+                          part.text
+                        ) {
+                          send({
+                            type: "delta",
+                            text: part.text
+                          });
+                        }
+                      }
+                    } catch (error) {
+                      if (
+                        error?.message &&
+                        !error.message.includes(
+                          "Unexpected token"
+                        )
+                      ) {
+                        throw error;
+                      }
+                    }
+                  }
+                }
+              }
+
+              send({
+                type: "done"
+              });
+
+              controller.close();
+            } catch (error) {
+              send({
+                type: "error",
+                message:
+                  error?.message ||
+                  "Toro backend stream error."
+              });
+
+              controller.close();
             }
-
-            send({ type: "done" });
-            controller.close();
-          } catch (error) {
-            send({
-              type: "error",
-              message:
-                error?.message || "Toro backend error"
-            });
-
-            controller.close();
           }
-        }
-      });
+        });
+
+      // ---------------------------------------------------------
+      // 9. RETURN SSE RESPONSE
+      // ---------------------------------------------------------
 
       return new Response(stream, {
         status: 200,
+
         headers: {
-          "Content-Type": "text/event-stream; charset=utf-8",
-          "Cache-Control": "no-cache, no-transform",
-          "Connection": "keep-alive",
-          "X-Accel-Buffering": "no"
+          "Content-Type":
+            "text/event-stream; charset=utf-8",
+
+          "Cache-Control":
+            "no-cache, no-transform",
+
+          "X-Accel-Buffering":
+            "no"
         }
       });
     } catch (error) {
+      // ---------------------------------------------------------
+      // 10. FINAL BACKEND ERROR
+      // ---------------------------------------------------------
+
       const message =
-        error?.message || "Toro backend error";
+        error?.message ||
+        "Toro backend error.";
 
       return Response.json(
-        { error: message },
-        { status: 500 }
+        {
+          error: message
+        },
+        {
+          status: 500,
+          headers: {
+            "Cache-Control":
+              "no-store"
+          }
+        }
       );
     }
   }
