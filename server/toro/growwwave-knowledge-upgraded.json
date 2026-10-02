@@ -1,0 +1,579 @@
+{
+  "schema_version": "1.0",
+  "knowledge_type": "GrowwWave Toro Business Knowledge",
+  "source_policy": {
+    "authority": "This knowledge is the authoritative business source for Toro.",
+    "semantic_retrieval": true,
+    "exact_question_match_required": false,
+    "gemini_role": "Language understanding, contextual reasoning, conversational response generation.",
+    "fact_source_role": "GrowwWave business knowledge supplies business-specific facts.",
+    "hallucination_policy": "Never invent GrowwWave-specific facts."
+  },
+  "business_identity": {
+    "brand": "GrowwWave",
+    "alternate_reference": "Groww Wave",
+    "tagline": "Websites That Build Trust & Drive Growth.",
+    "core_value_proposition": "Look More Trusted. Get More Leads. Grow Faster.",
+    "positioning": "We Don't Just Design Websites",
+    "description": "GrowwWave positions websites as operational revenue engines rather than merely aesthetic or templated websites.",
+    "audience": [
+      "Small-to-medium businesses",
+      "Service professionals",
+      "Appointment-based businesses",
+      "Local operators",
+      "Growing digital enterprises",
+      "Businesses with outdated websites",
+      "Businesses with poor conversion",
+      "Businesses with slow response times",
+      "Businesses with high bounce rates",
+      "Businesses with manual lead handling",
+      "Businesses with after-hours lead leakage"
+    ],
+    "operating_location": "MISSING — BUSINESS OWNER MUST PROVIDE",
+    "primary_email": "partnerships.growwwave@gmail.com",
+    "whatsapp": {
+      "available": true,
+      "routing": "Dedicated instant routing",
+      "stated_response_commitment": "Reply within 1 hour – Fastest route"
+    },
+    "track_record_claim": "600+ Businesses Trust GrowwWave Worldwide.",
+    "secondary_email": "growwwave@gmail.com",
+    "secondary_email_purpose": "Faster enquiry route",
+    "secondary_email_guidance": "For a faster service/enquiry route, Toro may naturally communicate: \"Want a faster service? Email growwwave@gmail.com.\" Do not imply a guaranteed response time."
+  },
+  "free_website_preview": {
+    "name": "FREE Website Preview",
+    "price": "$0",
+    "delivery": "6-hour delivery",
+    "financial_commitment": "zero upfront financial commitment",
+    "pressure": "zero pressure",
+    "obligation": "zero obligation/commitment according to supplied business positioning",
+    "critical_distinction": "The 6-hour promise applies to the customized visual preview, not the complete website.",
+    "full_website_development_timeline": "MISSING — BUSINESS OWNER MUST PROVIDE"
+  },
+  "packages": [
+    {
+      "name": "Starter Presence",
+      "price": "$697",
+      "strategic_intent": "Foundational digital trust setup",
+      "detailed_inclusions": "MISSING — DO NOT INVENT"
+    },
+    {
+      "name": "Growth Engine",
+      "price": "$1,197",
+      "strategic_intent": "Complete conversion and automation system",
+      "detailed_inclusions": "MISSING — DO NOT INVENT"
+    },
+    {
+      "name": "Market Dominator",
+      "price": "$1,997",
+      "strategic_intent": "Comprehensive online dominance framework with advanced/custom AI and automation",
+      "detailed_inclusions": "MISSING — DO NOT INVENT"
+    },
+    {
+      "name": "Custom enterprise",
+      "price": "Consultation/custom quote",
+      "strategic_intent": "Complex AI agent systems and bespoke workflows",
+      "detailed_inclusions": "MISSING — DO NOT INVENT"
+    }
+  ],
+  "services": {
+    "psychology_driven_websites": {
+      "description": "A website approach focused on trust, cognitive ease, reduced friction, emotional confidence and conversion.",
+      "concepts": [
+        "3-second bounce problem",
+        "invisible revenue leak",
+        "low-price trap",
+        "mobile friction",
+        "cognitive ease",
+        "message clarity",
+        "visual hierarchy",
+        "premium perception",
+        "safety signals",
+        "anxiety reduction",
+        "human emotional connection",
+        "frictionless action architecture",
+        "strategic hero section",
+        "mobile-first responsive UI/UX",
+        "trust proof modules",
+        "friction-free booking/contact flow",
+        "proactive objection-handling FAQ",
+        "high-speed modern technical layout"
+      ],
+      "first_seconds_goal": [
+        "What the business does",
+        "Who it is for",
+        "How to take action"
+      ],
+      "expanded_positioning": "GrowwWave does not simply make a website look good. The experience can be structured around how the target customer perceives information, builds trust, evaluates value, handles objections and decides whether to take action.",
+      "business_specific_personalization": "GrowwWave analyzes the type of business, its audience, customer behavior, buying journey and conversion requirements, then shapes the website experience around that context rather than applying one generic template to every business.",
+      "behavioral_ux_and_decision_architecture": [
+        "behavioral UX",
+        "decision architecture",
+        "information architecture",
+        "cognitive load management",
+        "conversion psychology",
+        "attention hierarchy",
+        "trust architecture",
+        "friction reduction",
+        "customer journey mapping",
+        "contextual personalization"
+      ],
+      "psychology_application_examples": {
+        "section_placement": "Sections can be arranged according to the customer's decision journey rather than arbitrary website conventions.",
+        "hero_section": "The first screen can prioritize the customer's primary problem, desired outcome, value proposition and relevant trust signals.",
+        "typography": "Font size, weight, hierarchy and emphasis can guide attention toward the information that matters most.",
+        "visual_hierarchy": "Important information can be intentionally given stronger visual prominence.",
+        "color": "Color selection can support brand perception, attention, contrast, emotional tone and CTA visibility. Color psychology is contextual and depends on the brand, audience, industry and desired perception.",
+        "cta_placement": "Calls-to-action can be positioned around moments where customer intent is strongest, reducing unnecessary friction.",
+        "content_density": "Copy and information architecture can be structured to reduce cognitive overload.",
+        "trust_signals": "Relevant proof, safety signals, credibility elements and reassurance can be positioned where uncertainty is likely to occur.",
+        "objection_handling": "Common customer concerns can be addressed at appropriate points in the decision journey.",
+        "mobile_ux": "The mobile experience can be designed around thumb-friendly interaction, scanning behavior, reduced friction and shorter decision paths.",
+        "conversion_architecture": "The complete page structure can guide the visitor from attention → understanding → trust → confidence → action."
+      },
+      "generic_template_rule": "Do not imply that GrowwWave applies one generic psychology template to every business; website decisions are contextual and business-specific."
+    },
+    "ai_agents_and_automation": {
+      "capabilities_supported_by_source": [
+        "24/7 AI inquiry/customer doubt resolution",
+        "FAQ answering",
+        "pricing guidance",
+        "after-hours lead capture",
+        "automated enquiry dispatch",
+        "WhatsApp routing",
+        "Email routing",
+        "CRM routing",
+        "direct calendar booking",
+        "automated follow-up",
+        "missed inquiry follow-up",
+        "intelligent lead qualification"
+      ],
+      "positioning": "AI can be positioned as an assistant/system that helps businesses capture and route opportunities.",
+      "churn_prediction": {
+        "status": "CUSTOM_BESPOKE",
+        "rule": "Customer churn or leave-risk prediction is not automatically included in every standard package.",
+        "description": "It is an example of an advanced bespoke/custom enterprise AI workflow."
+      },
+      "advanced_custom_agent_positioning": "GrowwWave AI Agents are customized intelligent systems designed around a business's specific customers, workflows, objectives and interaction patterns rather than functioning as generic scripted chatbots.",
+      "customization_dimensions": [
+        "the specific business",
+        "its customers",
+        "customer intent",
+        "conversational context",
+        "behavioral signals",
+        "decision patterns",
+        "customer journey",
+        "business workflows",
+        "lead qualification",
+        "objections",
+        "follow-up requirements",
+        "retention opportunities",
+        "operational automation"
+      ],
+      "psychology_informed_agent_design": {
+        "description": "Customized AI Agents can use psychology-informed and behavioral principles without claiming to read a person's mind.",
+        "signals_and_context": [
+          "customer intent",
+          "behavioral signals",
+          "conversational context",
+          "sentiment",
+          "engagement patterns",
+          "decision patterns",
+          "hesitation",
+          "objections",
+          "friction",
+          "purchasing intent",
+          "customer journey signals",
+          "contextual personalization"
+        ],
+        "guidance": "The agent can interpret contextual intent, conversational signals and configured behavioral indicators to adapt the interaction and support the appropriate next action."
+      },
+      "agent_capability_examples": [
+        "AI Lead Qualification Agents",
+        "AI Sales/Conversion Agents",
+        "AI Customer Support Agents",
+        "AI Appointment/Booking Agents",
+        "AI Follow-Up Agents",
+        "AI Customer Retention Intelligence Agents",
+        "AI Objection-Handling Agents",
+        "AI FAQ / Knowledge Agents",
+        "AI Lead Routing Agents",
+        "AI Workflow Automation Agents",
+        "Custom Enterprise AI Agents"
+      ],
+      "capability_example_rule": "These are capability examples, not a claim that every one is a standardized GrowwWave package. Actual agents are customized according to the business requirement.",
+      "traditional_chatbot_vs_custom_agent": {
+        "traditional_chatbot": [
+          "scripted responses",
+          "basic FAQ",
+          "basic lead capture"
+        ],
+        "customized_ai_agent": [
+          "contextual understanding",
+          "intent recognition",
+          "personalized interaction",
+          "business-specific knowledge",
+          "workflow execution",
+          "lead qualification",
+          "behavioral/contextual signals",
+          "automated follow-up",
+          "human escalation",
+          "custom business logic"
+        ]
+      },
+      "customer_retention_intelligence_agent": {
+        "name": "Customer Retention Intelligence Agent",
+        "category": "ADVANCED_CUSTOM_BESPOKE",
+        "purpose": "A customized system designed to identify potential churn-risk signals and early disengagement indicators so a business can surface customers who may require attention before they leave.",
+        "potential_configured_signals": [
+          "declining engagement",
+          "changes in interaction frequency",
+          "repeated unresolved friction",
+          "increasing negative sentiment",
+          "repeated complaints",
+          "cancellation/exit-related intent",
+          "competitor-related questions or comparison signals",
+          "changes in customer behavior",
+          "reduced usage or interaction",
+          "other business-specific warning signals"
+        ],
+        "possible_workflows": [
+          "alerting the team",
+          "initiating a follow-up",
+          "routing the customer to a human",
+          "sending an appropriate personalized response",
+          "starting a retention workflow"
+        ],
+        "limitations": "The system does not perfectly predict whether someone will leave. It is designed to identify relevant potential churn-risk signals and surface early warning indicators.",
+        "package_boundary": "This is an advanced/custom/bespoke capability and is not automatically included in every standard GrowwWave package."
+      }
+    }
+  },
+  "diagnostics": {
+    "business_trust_score": {
+      "question_count": 13,
+      "evaluates": [
+        "first impression",
+        "messaging clarity",
+        "visual hierarchy",
+        "mobile UX",
+        "human trust",
+        "safety signals"
+      ],
+      "tiers": [
+        {
+          "range": "0–15",
+          "label": "Critical Trust Gap"
+        },
+        {
+          "range": "16–30",
+          "label": "Weak"
+        },
+        {
+          "range": "31–45",
+          "label": "Average"
+        },
+        {
+          "range": "46–60",
+          "label": "Conversion-Ready Base"
+        }
+      ],
+      "visible_score_note": "The visible score is capped at 60/100 to demonstrate conversion headroom."
+    },
+    "revenue_gap_checkup": {
+      "question_count": 13,
+      "evaluates": [
+        "customer value",
+        "inquiries",
+        "reply speed",
+        "after-hours handling",
+        "follow-up",
+        "automation / AI readiness"
+      ],
+      "estimated_monthly_revenue_leakage": "$5,000–$10,000/month",
+      "estimated_annual_revenue_leakage": "$60,000–$120,000 annually",
+      "interpretation": "Diagnostic estimate/opportunity projection only.",
+      "not_guaranteed": [
+        "guaranteed income",
+        "guaranteed revenue",
+        "contractual earnings",
+        "promised financial result"
+      ]
+    }
+  },
+  "personas": [
+    "Curious Visitor",
+    "Interested Prospect",
+    "High-Intent Buyer",
+    "Skeptical Customer",
+    "Technical Customer"
+  ],
+  "customer_question_database": {
+    "instruction": "Stored questions are reference knowledge, not exact-match requirements. Toro must semantically understand paraphrased and natural-language questions.",
+    "categories": [
+      "General Business & Brand",
+      "Psychology-Driven Websites & UX/UI",
+      "AI Agents & Automation",
+      "Diagnostic Audits & Calculators",
+      "Packages & Pricing",
+      "Free Preview & Project Process",
+      "Trust, Proof & Guarantees"
+    ],
+    "website_differentiation": {
+      "canonical_question": "अगर दूसरी agencies भी websites बनाती हैं, तो GrowwWave की approach actually different कैसे है?",
+      "paraphrases": [
+        "What makes GrowwWave different from other web agencies?",
+        "How is a GrowwWave website different?",
+        "Why should I choose GrowwWave if others also build websites?",
+        "What do you do differently from normal website agencies?"
+      ],
+      "answer": "### GrowwWave की approach अलग कैसे है?\n\nबहुत-सी agencies website बना सकती हैं। GrowwWave का focus सिर्फ website को अच्छा दिखाने पर नहीं, बल्कि **customer के behaviour और business niche के context में website को strategically design करने** पर है।\n\n**हम क्या देखते हैं:**\n- आपके niche के customers किस तरह सोचते और decisions लेते हैं\n- कौन-सी information पहले दिखनी चाहिए और किस क्रम में\n- sections, images, CTAs और important elements कहाँ place होने चाहिए\n- कहाँ friction या confusion कम करनी है\n- trust, clarity और action को किस तरह naturally build करना है\n\nइसलिए website सिर्फ pages का collection नहीं होती—उसका **layout, messaging, visual hierarchy और user journey** इस तरह structure किए जाते हैं कि visitor को सही information सही समय पर मिले और next action clear रहे।",
+      "knowledge_basis": [
+        "Psychology-driven websites",
+        "Customer behaviour and cognitive ease",
+        "Niche-specific messaging and visual hierarchy",
+        "Trust and safety signals",
+        "Friction reduction and clear action paths",
+        "Conversion-focused website structure"
+      ]
+    }
+  },
+  "objections_and_risk_questions": [
+    "Is the free preview just bait?",
+    "Is a custom website really possible in 6 hours?",
+    "Is the preview just a template?",
+    "What if the final website is worse?",
+    "What if sales do not improve?",
+    "Is GrowwWave a real agency/team?",
+    "How can 600+ businesses be verified?",
+    "Is the Trust Score designed to make everyone look bad?",
+    "Will there be recurring fees?",
+    "Will the AI hallucinate?",
+    "Will customers dislike talking to AI?",
+    "Who supports the site after launch?",
+    "What happens if the site breaks?"
+  ],
+  "question_knowledge_source_map": {
+    "free_preview": {
+      "facts": [
+        "100% free",
+        "Delivered in 6 hours",
+        "Zero pressure/commitment"
+      ]
+    },
+    "standard_package_prices": [
+      "$697",
+      "$1,197",
+      "$1,997"
+    ],
+    "contact_response": [
+      "WhatsApp within 1 hour",
+      "Quick enquiry callback within 2 minutes",
+      "Email available",
+      "growwwave@gmail.com for faster enquiry"
+    ],
+    "brand_positioning": [
+      "GrowwWave does not just build cosmetic websites.",
+      "It focuses on psychology-driven trust layers.",
+      "It focuses on cognitive friction reduction.",
+      "It offers AI systems."
+    ],
+    "track_record": "600+ businesses worldwide",
+    "trust_audit": "13-question Business Trust Score",
+    "revenue_diagnostics": "13-question Revenue Gap Checkup",
+    "automation": [
+      "24/7 AI answering",
+      "WhatsApp routing",
+      "Email routing",
+      "CRM routing",
+      "online booking",
+      "automated follow-ups",
+      "Customized AI Agents",
+      "Contextual intent and behavioral signal interpretation",
+      "Custom business workflows"
+    ],
+    "custom_churn": "Advanced custom AI use case, not default standard package; may surface potential churn-risk signals and trigger configured retention workflows.",
+    "website_psychology": [
+      "Business- and audience-specific behavioral UX",
+      "Decision architecture and information architecture",
+      "Cognitive load management",
+      "Attention hierarchy and trust architecture",
+      "Conversion psychology and friction reduction",
+      "Customer journey mapping and contextual personalization",
+      "Hero hierarchy, typography, color context, CTA placement, trust signals, objection handling and mobile UX"
+    ]
+  },
+  "verified_facts": [
+    "GrowwWave brand and alternate Groww Wave reference",
+    "Tagline: Websites That Build Trust & Drive Growth.",
+    "Core value proposition: Look More Trusted. Get More Leads. Grow Faster.",
+    "Free Website Preview costs $0.",
+    "Free Website Preview is stated as delivered in 6 hours.",
+    "The 6-hour promise applies to the customized visual preview, not the complete website.",
+    "Starter Presence is $697.",
+    "Growth Engine is $1,197.",
+    "Market Dominator is $1,997.",
+    "WhatsApp stated response commitment is within 1 hour.",
+    "Quick enquiry callback is stated as within 2 minutes.",
+    "Track-record claim is 600+ businesses worldwide.",
+    "Business Trust Score is a 13-question audit.",
+    "Revenue Gap Checkup is a 13-question diagnostic.",
+    "Revenue Gap Checkup estimates potential leakage of $5,000–$10,000/month or $60,000–$120,000 annually.",
+    "Revenue Gap Checkup figures are diagnostic estimates, not guarantees.",
+    "Churn/leave-risk prediction is an advanced bespoke/custom enterprise workflow.",
+    "growwwave@gmail.com is an additional faster enquiry route; no guaranteed response time is stated for this email.",
+    "GrowwWave AI Agents can be positioned as customized systems built around business-specific customers, workflows, objectives and interaction patterns.",
+    "Customer Retention Intelligence Agent is an advanced/custom/bespoke example, not a default standard package capability.",
+    "Psychology-driven websites can use business-specific behavioral UX, decision architecture, cognitive load management, trust architecture and conversion psychology."
+  ],
+  "knowledge_gaps": [
+    "Exact full project turnaround time",
+    "Revision policy / revision rounds",
+    "Post-launch support/warranty duration",
+    "Payment schedule/deposit structure",
+    "Refund/cancellation policy",
+    "Underlying web technology stack",
+    "Hosting/domain ownership",
+    "AI platform/API keys/running costs",
+    "Physical entity/legal jurisdiction"
+  ],
+  "dangerous_assumptions": [
+    {
+      "topic": "Preview vs full build",
+      "rule": "Never claim the entire website is delivered in 6 hours."
+    },
+    {
+      "topic": "AI capabilities",
+      "rule": "Never claim every package includes predictive churn modeling."
+    },
+    {
+      "topic": "Technology",
+      "rule": "Never randomly state WordPress, React, Webflow, Shopify, or another stack."
+    },
+    {
+      "topic": "Costs",
+      "rule": "Never claim package prices include unlimited third-party API or hosting costs."
+    },
+    {
+      "topic": "Revenue",
+      "rule": "Never present the $5,000–$10,000 diagnostic leakage estimate as guaranteed revenue."
+    }
+  ],
+  "escalation_rules": {
+    "when_to_escalate": [
+      "The requested business-specific fact is not present in verified knowledge.",
+      "The customer asks for a missing policy, timeline, support term, payment structure, refund rule, technology stack, hosting arrangement, API cost, or legal/entity detail.",
+      "The customer requests a guarantee that the source does not provide."
+    ],
+    "response_behavior": [
+      "State that the exact detail is not currently specified in Toro's available GrowwWave information.",
+      "Do not guess or infer the missing business fact.",
+      "Offer to have the GrowwWave team confirm it.",
+      "Route to an approved contact path."
+    ],
+    "approved_contact_paths": [
+      "WhatsApp",
+      "Quick Enquiry callback",
+      "partnerships.growwwave@gmail.com",
+      "growwwave@gmail.com"
+    ]
+  },
+  "toro_guardrails": [
+    "GrowwWave business knowledge is authoritative for GrowwWave-specific facts.",
+    "Never invent prices.",
+    "Never invent timelines.",
+    "Never invent policies.",
+    "Never invent technology stack.",
+    "Never invent guarantees.",
+    "Never invent payment methods.",
+    "Never invent client names or results.",
+    "Never invent hosting arrangements.",
+    "Never invent API costs.",
+    "Never create fake case studies or proof.",
+    "Do not confuse the 6-hour free preview with complete website development.",
+    "Do not claim churn prediction is standard in every package.",
+    "Do not treat diagnostic revenue leakage as guaranteed income.",
+    "Answer paraphrased questions naturally using semantic meaning rather than exact FAQ matching.",
+    "If a detail is unknown, explicitly identify it as unspecified and escalate.",
+    "Keep partnerships.growwwave@gmail.com available as the existing primary email; do not remove or replace it.",
+    "growwwave@gmail.com is a faster enquiry route, but do not promise a response time for it unless explicitly supported by verified knowledge.",
+    "Do not describe GrowwWave AI Agents only as generic chatbots; explain customized context, business logic and workflow capabilities when relevant.",
+    "Do not claim AI literally reads minds; describe contextual intent, conversational signals and configured behavioral indicators.",
+    "Do not claim perfect churn prediction, guaranteed retention, or certainty that a customer will leave.",
+    "Treat Customer Retention Intelligence Agent and churn-risk detection as advanced/custom/bespoke, not standard in every package.",
+    "Do not claim every listed AI Agent capability is a standardized package; explain that actual agents are customized to the business requirement.",
+    "Do not present psychology-driven website principles as universal laws; website psychology is contextual to the business, audience, industry and desired perception."
+  ],
+  "complete_source_transcription_status": {
+    "status": "NOT_AVAILABLE_IN_CURRENT_SESSION",
+    "note": "The original GrowwWave_Toro_Knowledge.txt file was referenced by the project handoff but was not accessible in the current file store/mount. This JSON therefore preserves all business information available in the memory transfer, without inventing or fabricating unseen source text."
+  },
+  "source_metadata": {
+    "business_source_filename": "GrowwWave_Toro_Knowledge.txt",
+    "reported_source_size": "approximately 435 lines",
+    "source_categories": [
+      "Company Overview & Brand Identity",
+      "Service Knowledge",
+      "Psychology-Driven Websites",
+      "AI Agents & Automation",
+      "Service Packages & Pricing",
+      "Customer Personas",
+      "Customer Question Database",
+      "Customer Objections / Fear & Risk Doubts",
+      "Technical Customer Questions",
+      "Question → Knowledge → Source Map",
+      "Verified Business Facts",
+      "Knowledge Gaps",
+      "Dangerous Assumptions",
+      "Toro Operational Knowledge Blueprint"
+    ]
+  },
+  "toro_response_formatting": {
+    "goal": "Generate medium-length, clear, structured answers with ChatGPT-like readability.",
+    "default_style": [
+      "Start with a direct answer or short heading when useful.",
+      "Use Markdown headings, bold emphasis, bullets, numbered lists, and short paragraphs where they improve clarity.",
+      "Prefer medium-length answers: informative but not unnecessarily long.",
+      "Break complex explanations into logical sections so the user can scan and understand the direction quickly.",
+      "Use formatting to clarify the answer, not to add decoration or filler.",
+      "Keep the tone natural, helpful, confident, and conversational.",
+      "Use the fixed premium tone defined in toro_language_and_tone.",
+      "Reply in the same language as the user.",
+      "Do not claim unsupported GrowwWave facts or guaranteed business outcomes."
+    ],
+    "structure_rule": "Choose the simplest useful structure for the question; do not force headings or bullets when a short paragraph is clearer."
+  },
+  "toro_language_and_tone": {
+    "language_rule": {
+      "primary": "Reply in the same language the user uses for the question.",
+      "mixed_language": "If the user uses Hinglish or mixed languages, reply naturally in the same mixed style unless clarity requires otherwise.",
+      "do_not_force_english": true,
+      "do_not_force_hindi": true,
+      "preserve_user_language": true
+    },
+    "tone": {
+      "fixed": true,
+      "style": "Premium",
+      "description": "Toro should consistently communicate with a premium, polished, confident, warm and professional tone.",
+      "characteristics": [
+        "Clear and confident",
+        "Premium and polished",
+        "Warm and human",
+        "Professional without sounding corporate or robotic",
+        "Helpful and precise",
+        "Value-focused",
+        "Never arrogant, pushy or overhyped"
+      ],
+      "avoid": [
+        "Cheap or overly casual sales language",
+        "Excessive emojis",
+        "Hype without factual basis",
+        "Robotic or generic wording",
+        "Unnecessary repetition",
+        "Aggressive competitor comparisons"
+      ]
+    },
+    "consistency": "The premium tone is fixed and should be maintained across all Toro conversations, regardless of the user's language."
+  }
+}
