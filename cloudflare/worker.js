@@ -6,6 +6,12 @@ const FALLBACK_MODEL = "openrouter/free";
 const PUBLIC_ERROR_MESSAGE =
   "Toro is temporarily unavailable right now. Please try again in a moment. For immediate assistance, you can reach the GrowwWave team directly via WhatsApp or email.";
 
+const CORS_HEADERS = {
+  "Access-Control-Allow-Origin": "https://growwwave.github.io",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
 function getReadableProviderError(rawText, fallbackMessage) {
   let readableError = rawText;
 
@@ -347,6 +353,14 @@ export default {
       return env.ASSETS.fetch(request);
     }
 
+    // Toro API — CORS preflight
+    if (request.method === "OPTIONS") {
+      return new Response(null, {
+        status: 204,
+        headers: CORS_HEADERS,
+      });
+    }
+
     // Toro API — POST only
     if (request.method !== "POST") {
       return new Response(
@@ -354,7 +368,8 @@ export default {
         {
           status: 405,
           headers: {
-            Allow: "POST"
+            Allow: "POST",
+            ...CORS_HEADERS
           }
         }
       );
@@ -382,7 +397,10 @@ export default {
               "messages is required"
           },
           {
-            status: 400
+            status: 400,
+            headers: {
+              ...CORS_HEADERS
+            }
           }
         );
       }
@@ -705,6 +723,8 @@ export default {
           status: 200,
 
           headers: {
+            ...CORS_HEADERS,
+
             "Content-Type":
               "text/event-stream; charset=utf-8",
 
@@ -734,6 +754,8 @@ export default {
           status: 503,
 
           headers: {
+            ...CORS_HEADERS,
+
             "Cache-Control":
               "no-store"
           }
